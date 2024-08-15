@@ -9,11 +9,11 @@ class BasePage:
     def __init__(self, browser):
         self.browser = browser
 
-    def find(self, *args):
-        return self.browser.find_element(*args)
+    def find(self, locator):
+        return self.browser.find_element(*locator)
 
-    def find_elements(self, *args):
-        return self.browser.find_elements(*args)
+    def find_elements(self, locator):
+        return self.browser.find_elements(*locator)
 
     def open(self, url):
         self.browser.get(url)
@@ -31,7 +31,7 @@ class BasePage:
         hover = ActionChains(self.browser).move_to_element(element)
         hover.perform()
 
-    def wait_element(self, *locator):
+    def wait_element(self, locator):
         try:
             WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located(locator)

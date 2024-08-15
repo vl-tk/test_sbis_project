@@ -1,41 +1,29 @@
-from selenium.webdriver.common.by import By
 from pages.home_page import HomePage
+from utils.locators import HomePageLocators, ContactsPageLocators
 
 
 def test_second_script(browser):
     home_page = HomePage(browser)
     home_page.open("https://sbis.ru/")
 
-    menu_button = home_page.find(By.LINK_TEXT, "Контакты")
+    menu_button = home_page.find(HomePageLocators.CONTACTS_LINK)
     menu_button.click()
 
-    region_chooser = home_page.find(
-        By.CSS_SELECTOR,
-        "span[class='sbis_ru-Region-Chooser ml-16 ml-xm-0'] span[class='sbis_ru-Region-Chooser__text sbis_ru-link']",
-    )
-    assert region_chooser.text == "Омская обл."
+    region_selector = home_page.find(ContactsPageLocators.REGION_LINK)
+    assert region_selector.text == "Омская обл."
 
-    partners_list = home_page.find_elements(
-        By.CLASS_NAME,
-        "sbisru-Contacts-List__item",
-    )
+    partners_list = home_page.find_elements(ContactsPageLocators.CONTACTS_LIST)
     assert partners_list != []
 
-    region_chooser.click()
+    region_selector.click()
 
-    new_link = home_page.find(By.CSS_SELECTOR, "span[title='Камчатский край'] span")
+    new_link = home_page.find(ContactsPageLocators.KAMCHATKA_ITEM)
     new_link.click()
 
-    home_page.wait_element(
-        By.XPATH,
-        "//*[@id='city-id-2' and contains(text(),'Петропавловск-Камчатский')]",
-    )
+    home_page.wait_element(ContactsPageLocators.KAMCHATKA_TITLE)
 
     # список партнеров стал для Камчатки
-    partners_list = home_page.find_elements(
-        By.CLASS_NAME,
-        "sbisru-Contacts-List__item",
-    )
+    partners_list = home_page.find_elements(ContactsPageLocators.CONTACTS_LIST)
     assert partners_list != []
     assert "Камчатка" in partners_list[0].text
 
