@@ -1,6 +1,7 @@
 import pytest
 from selenium import webdriver
 from pathlib import Path
+import os
 
 
 @pytest.fixture()
@@ -19,3 +20,6 @@ def browser():
     browser.maximize_window()
     yield browser
     browser.quit()
+    downloaded_files = [f for f in os.listdir(download_dir) if f.endswith(".exe")]
+    for f in downloaded_files:
+        Path(f).unlink()
