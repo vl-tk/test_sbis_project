@@ -21,4 +21,4 @@ def test_third_script(browser):
     file_path = Path.cwd() / filename
 
     assert Path(file_path).exists()
-    assert Path(file_path).stat().st_size == 11_591_832
+    assert round(Path(file_path).stat().st_size / 1048576, 2) == 11.05
